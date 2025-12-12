@@ -1,17 +1,19 @@
+"use client";
+
 import {
-  FolderOpen,
-  Eye,
-  Settings2,
-  Monitor,
-  Zap,
-  Moon,
-  Laptop,
-  Heart,
+  Check,
   Download,
+  Eye,
+  FolderOpen,
   Github,
-  ArrowRight,
-  CheckCircle2,
+  Heart,
+  Laptop,
+  Monitor,
+  Moon,
+  Settings2,
+  Zap,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const features = [
   {
@@ -88,6 +90,47 @@ const howItWorks = [
 ];
 
 export default function Home() {
+  const [os, setOs] = useState<"mac" | "windows" | "other">("mac");
+
+  useEffect(() => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    if (userAgent.includes("mac")) {
+      setOs("mac");
+    } else if (userAgent.includes("win")) {
+      setOs("windows");
+    } else {
+      setOs("other");
+    }
+  }, []);
+
+  const getButtonContent = () => {
+    if (os === "mac") {
+      return {
+        icon: (
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+          </svg>
+        ),
+        text: "Buy for macOS — $9",
+      };
+    } else if (os === "windows") {
+      return {
+        icon: (
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 5.557l7.357-1.002v7.102H3V5.557zm0 12.886l7.357 1.002v-7.088H3v6.086zm8.143 1.124L22 21v-8.643h-10.857v7.21zm0-14.134v7.218H22V3l-10.857 1.433z"/>
+          </svg>
+        ),
+        text: "Buy for Windows — $9",
+      };
+    }
+    return {
+      icon: <Download className="w-5 h-5" />,
+      text: "Buy Now — $9",
+    };
+  };
+
+  const buttonContent = getButtonContent();
+
   return (
     <div className="min-h-screen animated-gradient relative overflow-hidden">
       {/* Animated background orbs */}
@@ -120,7 +163,7 @@ export default function Home() {
               className="btn-primary px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2"
             >
               <Download className="w-4 h-4" />
-              Download
+              Buy
             </a>
           </div>
         </div>
@@ -154,15 +197,50 @@ export default function Home() {
               <Download className="w-5 h-5" />
               Buy for $9
             </a>
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-secondary px-8 py-4 rounded-full text-base font-medium flex items-center gap-2"
-            >
-              <Github className="w-5 h-5" />
-              View on GitHub
-            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section id="how-it-works" className="relative py-20 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              How <span className="text-gradient">Filenest</span> works
+            </h2>
+            <p className="text-zinc-400 max-w-2xl mx-auto">
+              Get organized in minutes with a simple, intuitive workflow.
+            </p>
+          </div>
+
+          {/* Sort GIF Demo */}
+          <div className="mb-12">
+            <div className="feature-card rounded-2xl p-4 overflow-hidden">
+              <img
+                src="/screenshots/sort.gif"
+                alt="Filenest sorting files automatically"
+                className="w-full rounded-xl"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            {howItWorks.map((item, index) => (
+              <div
+                key={index}
+                className="feature-card rounded-2xl p-6 flex items-start gap-6"
+              >
+                <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                  <span className="text-xl font-bold text-blue-400">
+                    {item.step}
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
+                  <p className="text-zinc-400">{item.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -200,95 +278,93 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section id="how-it-works" className="relative py-20 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              How <span className="text-gradient">Filenest</span> works
-            </h2>
-            <p className="text-zinc-400 max-w-2xl mx-auto">
-              Get organized in minutes with a simple, intuitive workflow.
-            </p>
-          </div>
+      {/* Pricing Section */}
+      <section id="download" className="relative py-20 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Simple pricing. <span className="text-gradient">Forever yours.</span>
+          </h2>
+          <p className="text-xl text-zinc-400 mb-12 max-w-2xl mx-auto">
+            No subscriptions. No recurring fees. Buy once, use forever.
+          </p>
 
-          <div className="space-y-6">
-            {howItWorks.map((item, index) => (
-              <div
-                key={index}
-                className="feature-card rounded-2xl p-6 flex items-start gap-6"
-              >
-                <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
-                  <span className="text-xl font-bold text-blue-400">
-                    {item.step}
-                  </span>
+          <div className="feature-card rounded-2xl p-8 md:p-12">
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
+              {/* Left side - Price and button */}
+              <div className="text-left">
+                <div className="mb-6">
+                  <span className="text-6xl md:text-7xl font-bold">$9</span>
+                  <span className="text-zinc-400 text-xl ml-2">USD</span>
+                  <p className="text-zinc-500 mt-2">One-time payment</p>
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
-                  <p className="text-zinc-400">{item.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Tech Stack Section */}
-      <section className="relative py-20 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="feature-card rounded-2xl p-8 md:p-12 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6">
-              Built with Modern Technology
-            </h2>
-            <div className="flex flex-wrap items-center justify-center gap-8 text-zinc-400">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-400" />
-                <span>Electron (Cross-platform)</span>
+                <a
+                  href="#"
+                  className="btn-primary w-full md:w-auto px-8 py-4 rounded-xl text-base font-medium flex items-center justify-center gap-3 mb-4"
+                >
+                  {buttonContent.icon}
+                  {buttonContent.text}
+                </a>
+
+                <p className="text-xs text-zinc-500">
+                  Secure checkout powered by Gumroad
+                </p>
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-400" />
-                <span>Windows & macOS</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-400" />
-                <span>Tauri (Rust) version coming</span>
+
+              {/* Right side - Features */}
+              <div className="text-left">
+                <p className="text-xs font-semibold tracking-wider text-zinc-400 mb-4">
+                  EVERYTHING INCLUDED
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 text-zinc-300">
+                    <Check className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                    <span>Lifetime license, pay once</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-zinc-300">
+                    <Check className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                    <span>All future updates included</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-zinc-300">
+                    <Check className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                    <span>Windows & macOS support</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-zinc-300">
+                    <Check className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                    <span>Unlimited folders & categories</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-zinc-300">
+                    <Check className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                    <span>Real-time folder watching</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-zinc-300">
+                    <Check className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                    <span>Local-first, privacy-focused</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-zinc-300">
+                    <Check className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                    <span>Native desktop app</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Download CTA Section */}
-      <section id="download" className="relative py-20 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-5xl font-bold mb-6">
-            Ready to organize your files?
-          </h2>
-          <p className="text-xl text-zinc-400 mb-10 max-w-2xl mx-auto">
-            Download Filenest for free and take control of your Downloads folder
-            today.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-            <a
-              href="#"
-              className="btn-primary px-8 py-4 rounded-full text-base font-medium flex items-center gap-2 w-full sm:w-auto justify-center"
-            >
-              <Download className="w-5 h-5" />
-              Download for Windows
-            </a>
-            <a
-              href="#"
-              className="btn-secondary px-8 py-4 rounded-full text-base font-medium flex items-center gap-2 w-full sm:w-auto justify-center"
-            >
-              <Download className="w-5 h-5" />
-              Download for Linux
-            </a>
+          {/* Bottom info row */}
+          <div className="flex flex-wrap items-center justify-center gap-8 mt-8 text-sm text-zinc-400">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>Instant delivery</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+              <span>Windows 10+ / macOS 12+ required</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-purple-500"></span>
+              <span>License key via email</span>
+            </div>
           </div>
-
-          <p className="text-sm text-zinc-500">
-            No account required.
-          </p>
         </div>
       </section>
 
@@ -303,7 +379,7 @@ export default function Home() {
           <div className="text-sm text-zinc-500 text-center">
             <p>&copy; 2025 Almin. All rights reserved.</p>
             <p className="mt-1">
-              &quot;Built&quot; by{" "}
+              Built by{" "}
               <a
                 href="https://x.com/almin0x1011"
                 target="_blank"
