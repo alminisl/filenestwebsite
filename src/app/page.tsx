@@ -159,7 +159,7 @@ export default function Home() {
               How It Works
             </a>
             <a
-              href="#download"
+              href="https://buy.polar.sh/polar_cl_d7JOsy8Bpxc4R2dSwlSsSisTTz2YM62MbtMxQ1ipxmK"
               className="btn-primary px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2"
             >
               <Download className="w-4 h-4" />
@@ -191,7 +191,7 @@ export default function Home() {
 
           <div className="animate-fade-in-up opacity-0 animate-delay-300 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="#download"
+              href="https://buy.polar.sh/polar_cl_d7JOsy8Bpxc4R2dSwlSsSisTTz2YM62MbtMxQ1ipxmK"
               className="btn-primary px-8 py-4 rounded-full text-base font-medium flex items-center gap-2"
             >
               <Download className="w-5 h-5" />
@@ -299,7 +299,7 @@ export default function Home() {
                 </div>
 
                 <a
-                  href="#"
+                  href="https://buy.polar.sh/polar_cl_d7JOsy8Bpxc4R2dSwlSsSisTTz2YM62MbtMxQ1ipxmK"
                   className="btn-primary w-full md:w-auto px-8 py-4 rounded-xl text-base font-medium flex items-center justify-center gap-3 mb-4"
                 >
                   {buttonContent.icon}
@@ -307,7 +307,7 @@ export default function Home() {
                 </a>
 
                 <p className="text-xs text-zinc-500">
-                  Secure checkout powered by Gumroad
+                  Secure checkout powered by Polar
                 </p>
               </div>
 
