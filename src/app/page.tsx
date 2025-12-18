@@ -13,7 +13,32 @@ import {
   Settings2,
   Zap,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+
+// Custom hook for scroll-triggered animations
+function useScrollFadeIn() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+    );
+
+    const elements = ref.current?.querySelectorAll(".scroll-fade-in");
+    elements?.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
+  return ref;
+}
 
 const features = [
   {
@@ -91,6 +116,7 @@ const howItWorks = [
 
 export default function Home() {
   const [os, setOs] = useState<"mac" | "windows" | "other">("mac");
+  const scrollRef = useScrollFadeIn();
 
   useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase();
@@ -132,7 +158,7 @@ export default function Home() {
   const buttonContent = getButtonContent();
 
   return (
-    <div className="min-h-screen animated-gradient relative overflow-hidden">
+    <div ref={scrollRef} className="min-h-screen animated-gradient relative overflow-hidden">
       {/* Animated background orbs */}
       <div className="glow-orb glow-orb-1" />
       <div className="glow-orb glow-orb-2" />
@@ -228,7 +254,7 @@ export default function Home() {
             {howItWorks.map((item, index) => (
               <div
                 key={index}
-                className="feature-card rounded-2xl p-6 flex items-start gap-6"
+                className={`feature-card rounded-2xl p-6 flex items-start gap-6 scroll-fade-in delay-${index + 1}`}
               >
                 <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
                   <span className="text-xl font-bold text-blue-400">
@@ -263,7 +289,7 @@ export default function Home() {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="feature-card rounded-2xl p-6"
+                className={`feature-card rounded-2xl p-6 scroll-fade-in delay-${(index % 4) + 1}`}
               >
                 <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-4">
                   <feature.icon className="w-6 h-6 text-blue-400" />
