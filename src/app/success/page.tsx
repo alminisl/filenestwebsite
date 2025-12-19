@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, FolderOpen } from "lucide-react";
+import { Check, FolderOpen, Mail } from "lucide-react";
 import { Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -47,6 +47,17 @@ function SuccessContent() {
         >
           Go to Home Now
         </button>
+
+        <p className="mt-6 text-xs text-zinc-500 flex items-center justify-center gap-2">
+          <Mail className="w-3 h-3" />
+          Need help?{" "}
+          <a
+            href="mailto:support@filenest.tech"
+            className="text-blue-400 hover:text-blue-300 transition-colors"
+          >
+            support@filenest.tech
+          </a>
+        </p>
       </div>
     </div>
   );
