@@ -97,21 +97,20 @@ const howItWorks = [
     step: 1,
     title: "Configure Categories",
     description: "Set up categories like \"Documents\" → .pdf, .docx, .txt",
+    image: "/screenshots/categories.png",
   },
   {
     step: 2,
     title: "Watch Your Folder",
-    description: "The app monitors your Downloads folder in real-time",
+    description: "The app monitors your Downloads folder in real-time and automatically moves new files to matching category folders",
+    image: "/screenshots/watcher.png",
+    imageSize: "small",
   },
   {
     step: 3,
-    title: "Automatic Sorting",
-    description: "New files are automatically moved to matching category folders",
-  },
-  {
-    step: 4,
-    title: "Manual Sort Option",
-    description: "Trigger a sort of all existing files anytime you want",
+    title: "Customize Your Watch Path",
+    description: "Choose any folder to watch it doesn't have to be Downloads. Perfect for organizing project folders, desktop, or any directory",
+    image: "/screenshots/mainpath.png",
   },
 ];
 
@@ -267,20 +266,35 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-8">
             {howItWorks.map((item, index) => (
               <div
                 key={index}
-                className={`feature-card rounded-2xl p-6 flex items-start gap-6 scroll-fade-in delay-${index + 1}`}
+                className={`feature-card rounded-2xl p-6 scroll-fade-in delay-${index + 1}`}
               >
-                <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
-                  <span className="text-xl font-bold text-blue-400">
-                    {item.step}
-                  </span>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
-                  <p className="text-zinc-400">{item.description}</p>
+                <div className={`flex flex-col ${item.image ? (index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse') : ''} gap-6 items-center`}>
+                  {/* Text content */}
+                  <div className={`flex items-start gap-4 ${item.image ? 'md:w-1/2' : 'w-full'}`}>
+                    <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-xl font-bold text-blue-400">
+                        {item.step}
+                      </span>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
+                      <p className="text-zinc-400">{item.description}</p>
+                    </div>
+                  </div>
+                  {/* Screenshot */}
+                  {item.image && (
+                    <div className={`md:w-1/2 ${item.imageSize === 'small' ? 'flex justify-center' : ''}`}>
+                      <img
+                        src={item.image}
+                        alt={`${item.title} screenshot`}
+                        className={`rounded-xl border border-white/10 ${item.imageSize === 'small' ? 'w-1/2' : 'w-full'}`}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -442,7 +456,7 @@ export default function Home() {
               <Mail className="w-5 h-5" />
             </a>
             <a
-              href="https://github.com"
+              href="https://github.com/alminisl"
               target="_blank"
               rel="noopener noreferrer"
               className="text-zinc-400 hover:text-white transition-colors"
