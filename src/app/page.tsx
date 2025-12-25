@@ -14,7 +14,7 @@ import {
   Settings2,
   Zap,
 } from "lucide-react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Custom hook for scroll-triggered animations
 function useScrollFadeIn() {
@@ -222,8 +222,8 @@ export default function Home() {
           </div>
 
           <h1 className="animate-fade-in-up opacity-0 animate-delay-100 text-5xl md:text-7xl font-bold tracking-tight mb-6">
-            Tame your Downloads folder
-            <span className="text-gradient">—automatically.</span>
+            Tame your Downloads folder,
+            <span className="text-gradient">automatically.</span>
           </h1>
 
           <p className="animate-fade-in-up opacity-0 animate-delay-200 text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10">
