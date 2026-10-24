@@ -10,7 +10,7 @@ import {
   Laptop,
   Mail,
   Monitor,
-  Moon,
+  RotateCcw,
   Settings2,
   ShoppingCart,
   Zap,
@@ -65,25 +65,25 @@ const features = [
     icon: Monitor,
     title: "Minimal & Unobtrusive",
     description:
-      "Lives quietly in your system tray. No clunky windows—just right-click to sort, toggle the watcher, or open settings.",
+      "Lives quietly in your system tray and can start with your computer. Right-click to sort, pause watching, or undo.",
   },
   {
     icon: Zap,
     title: "Smart Download Detection",
     description:
-      "Waits for files to fully download before moving them. No more broken or partial files in your organized folders.",
+      "Waits for files to fully download before moving them, and never overwrites: a second report.pdf becomes report (1).pdf.",
   },
   {
-    icon: Moon,
-    title: "Modern Dark Mode Interface",
+    icon: RotateCcw,
+    title: "Undo in One Click",
     description:
-      "Clean, modern settings UI with a dark theme that's easy on the eyes.",
+      "Sorted something you wanted to keep in place? Undo the last sort from the tray menu and every file goes back.",
   },
   {
     icon: Laptop,
-    title: "Cross-Platform",
+    title: "Native on Every Desktop",
     description:
-      "Available for Windows and macOS. Linux support coming soon.",
+      "Windows, macOS and Linux. Written in Rust: an 8 MB install, about 20 MB of memory, and zero CPU while it waits.",
   },
   {
     icon: Heart,
@@ -98,14 +98,13 @@ const howItWorks = [
     step: 1,
     title: "Configure Categories",
     description: "Set up categories like \"Documents\" → .pdf, .docx, .txt",
-    image: "/screenshots/categories.png",
+    video: "/screenshots/settings.mp4",
   },
   {
     step: 2,
     title: "Watch Your Folder",
     description: "The app monitors your Downloads folder in real-time and automatically moves new files to matching category folders",
-    image: "/screenshots/watcher.png",
-    imageSize: "small",
+    video: "/screenshots/sort.mp4",
   },
   {
     step: 3,
@@ -202,6 +201,12 @@ export default function Home() {
               How It Works
             </a>
             <a
+              href="#whats-new"
+              className="text-sm text-zinc-400 hover:text-white transition-colors"
+            >
+              What&apos;s New
+            </a>
+            <a
               href="/home"
               className="btn-primary px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2"
             >
@@ -223,9 +228,9 @@ export default function Home() {
       <section className="relative pt-32 pb-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <div className="animate-fade-in-up opacity-0">
-            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-6">
-              Desktop App for Windows & macOS
-            </span>
+            <a href="#whats-new" className="inline-block px-4 py-1.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-6 hover:bg-emerald-500/20 transition-colors">
+              Filenest 2.0 is out — rebuilt for speed
+            </a>
           </div>
 
           <h1 className="animate-fade-in-up opacity-0 animate-delay-100 text-5xl md:text-7xl font-bold tracking-tight mb-6">
@@ -234,9 +239,9 @@ export default function Home() {
           </h1>
 
           <p className="animate-fade-in-up opacity-0 animate-delay-200 text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10">
-            Filenest is a desktop file organizer that runs in your system tray.
-            It automatically sorts files into categorized subfolders based on
-            file extensions.
+            Filenest is a tiny native app that lives in your system tray and
+            sorts new downloads into folders by file type. Set it up once,
+            then forget it exists.
           </p>
 
           <div className="animate-fade-in-up opacity-0 animate-delay-300 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -273,10 +278,15 @@ export default function Home() {
           {/* Sort GIF Demo */}
           <div className="mb-12">
             <div className="feature-card rounded-2xl p-4 overflow-hidden">
-              <img
-                src="/screenshots/sort.gif"
-                alt="Filenest sorting files automatically"
+              <video
+                src="/screenshots/showcase.mp4"
                 className="w-full rounded-xl"
+                controls
+                autoPlay
+                loop
+                muted
+                playsInline
+                aria-label="Filenest sorting files automatically"
               />
             </div>
           </div>
@@ -287,9 +297,9 @@ export default function Home() {
                 key={index}
                 className={`feature-card rounded-2xl p-6 scroll-fade-in delay-${index + 1}`}
               >
-                <div className={`flex flex-col ${item.image ? (index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse') : ''} gap-6 items-center`}>
+                <div className={`flex flex-col ${item.image || item.video ? (index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse') : ''} gap-6 items-center`}>
                   {/* Text content */}
-                  <div className={`flex items-start gap-4 ${item.image ? 'md:w-1/2' : 'w-full'}`}>
+                  <div className={`flex items-start gap-4 ${item.image || item.video ? 'md:w-1/2' : 'w-full'}`}>
                     <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
                       <span className="text-xl font-bold text-blue-400">
                         {item.step}
@@ -300,6 +310,19 @@ export default function Home() {
                       <p className="text-zinc-400">{item.description}</p>
                     </div>
                   </div>
+                  {item.video && (
+                    <div className="md:w-1/2">
+                      <video
+                        src={item.video}
+                        className="w-full rounded-xl border border-white/10"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        aria-label={`${item.title} demo`}
+                      />
+                    </div>
+                  )}
                   {/* Screenshot */}
                   {item.image && (
                     <div className={`md:w-1/2 ${item.imageSize === 'small' ? 'flex justify-center' : ''}`}>
@@ -313,6 +336,57 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* What's new in 2.0 */}
+      <section id="whats-new" className="relative py-20 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              What&apos;s new in <span className="text-gradient">2.0</span>
+            </h2>
+            <p className="text-zinc-400 max-w-2xl mx-auto">
+              The whole backend was rewritten in Rust. Same simple app, a fraction of the footprint.
+            </p>
+          </div>
+
+          <div className="feature-card rounded-2xl p-8">
+            <div className="grid grid-cols-3 gap-6 text-center mb-8">
+              <div>
+                <p className="text-3xl md:text-4xl font-bold text-emerald-400">8 MB</p>
+                <p className="text-sm text-zinc-400 mt-1">install, down from 90 MB</p>
+              </div>
+              <div>
+                <p className="text-3xl md:text-4xl font-bold text-emerald-400">20 MB</p>
+                <p className="text-sm text-zinc-400 mt-1">memory, down from 200 MB</p>
+              </div>
+              <div>
+                <p className="text-3xl md:text-4xl font-bold text-emerald-400">0%</p>
+                <p className="text-sm text-zinc-400 mt-1">CPU while waiting</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-zinc-300">
+              {[
+                "Nothing polls: the app reacts to the file system instead of checking it",
+                "Never overwrites an existing file; duplicates get a numbered name",
+                "Undo the last sort from the tray menu",
+                "Start with your computer, one checkbox in the tray",
+                "Linux builds, next to Windows and macOS",
+                "Signed automatic updates",
+              ].map((line) => (
+                <div key={line} className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm">{line}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-zinc-500 mt-8">
+              Already using Filenest 1.x? This version needs a one-time download from the{" "}
+              <a href="/home" className="text-blue-400 hover:text-blue-300 transition-colors">download page</a>.
+              Your settings and licence carry over.
+            </p>
           </div>
         </div>
       </section>
@@ -407,7 +481,7 @@ export default function Home() {
                   </div>
                   <div className="flex items-center gap-3 text-zinc-300">
                     <Check className="w-5 h-5 text-emerald-500 flex-shrink-0" />
-                    <span>Windows & macOS support</span>
+                    <span>Windows, macOS & Linux</span>
                   </div>
                   <div className="flex items-center gap-3 text-zinc-300">
                     <Check className="w-5 h-5 text-emerald-500 flex-shrink-0" />
@@ -438,7 +512,7 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-              <span>Windows 10+ / macOS 12+ required</span>
+              <span>Windows 10+, macOS 12+, Linux</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-purple-500"></span>
@@ -457,7 +531,7 @@ export default function Home() {
           </div>
 
           <div className="text-sm text-zinc-500 text-center">
-            <p>&copy; 2025 Almin. All rights reserved.</p>
+            <p>&copy; 2026 Almin. All rights reserved.</p>
             <p className="mt-1">
               Built by{" "}
               <a

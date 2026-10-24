@@ -35,7 +35,7 @@ export async function GET() {
 
     if (!response.ok) {
       // No releases yet or other error
-      const emptyDownloads = { windows: [], macos: [] };
+      const emptyDownloads = { windows: [], macos: [], linux: [] };
       return NextResponse.json(emptyDownloads);
     }
 
@@ -43,6 +43,7 @@ export async function GET() {
 
     const windows: { name: string; url: string; size: number }[] = [];
     const macos: { name: string; url: string; size: number }[] = [];
+    const linux: { name: string; url: string; size: number }[] = [];
 
     for (const asset of release.assets) {
       const name = asset.name.toLowerCase();
@@ -56,10 +57,12 @@ export async function GET() {
         windows.push(file);
       } else if (name.endsWith(".dmg") || name.endsWith(".pkg") || (name.endsWith(".zip") && name.includes("mac"))) {
         macos.push(file);
+      } else if (name.endsWith(".appimage") || name.endsWith(".deb")) {
+        linux.push(file);
       }
     }
 
-    const downloads = { windows, macos };
+    const downloads = { windows, macos, linux };
 
     // Update cache
     cachedResponse = { data: downloads, timestamp: Date.now() };
@@ -67,7 +70,7 @@ export async function GET() {
     return NextResponse.json(downloads);
   } catch (error) {
     console.error("Failed to fetch GitHub releases:", error);
-    const emptyDownloads = { windows: [], macos: [] };
+    const emptyDownloads = { windows: [], macos: [], linux: [] };
     return NextResponse.json(emptyDownloads);
   }
 }

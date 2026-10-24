@@ -12,6 +12,7 @@ interface DownloadFile {
 interface Downloads {
   windows: DownloadFile[];
   macos: DownloadFile[];
+  linux: DownloadFile[];
 }
 
 function formatFileSize(bytes: number): string {
@@ -45,6 +46,9 @@ export default function HomePage() {
   const macosArm = downloads?.macos.filter((f) => getMacOSType(f.name) === "arm") || [];
   const macosUniversal = downloads?.macos.filter((f) => getMacOSType(f.name) === "universal") || [];
   const windowsFiles = downloads?.windows || [];
+  const linuxFiles = downloads?.linux || [];
+  // Tauri names builds Filenest_<version>_x64.dmg / _aarch64.dmg; 1.x shipped a single universal dmg
+  const macLabel = (name: string) => (/x64|x86_64|intel/i.test(name) ? "Intel" : "Universal (Intel + Apple Silicon)");
 
   return (
     <div className="min-h-screen animated-gradient relative overflow-hidden">
@@ -132,7 +136,7 @@ export default function HomePage() {
                       >
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="font-medium">Universal (Intel + Apple Silicon)</p>
+                            <p className="font-medium">{macLabel(file.name)}</p>
                             <p className="text-xs text-zinc-500">{file.name} ({formatFileSize(file.size)})</p>
                           </div>
                           <Download className="w-5 h-5 text-blue-400 group-hover:text-blue-300 transition-colors" />
@@ -181,6 +185,41 @@ export default function HomePage() {
                     )}
                   </div>
                 </div>
+
+                {/* Linux Section */}
+                {linuxFiles.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-xl bg-zinc-800 flex items-center justify-center">
+                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 2a4 4 0 0 0-4 4v3.3c0 1-.5 1.8-1.2 2.7C5.7 13.4 5 15 5 16.5c0 .9.3 1.7.8 2.3-.6.3-1.3.9-1.3 1.7 0 .9.8 1.5 1.7 1.5.6 0 1.2-.2 1.6-.6.6.4 1.3.6 2.2.6h4c.9 0 1.6-.2 2.2-.6.4.4 1 .6 1.6.6.9 0 1.7-.6 1.7-1.5 0-.8-.7-1.4-1.3-1.7.5-.6.8-1.4.8-2.3 0-1.5-.7-3.1-1.8-4.5-.7-.9-1.2-1.7-1.2-2.7V6a4 4 0 0 0-4-4zm-1.5 4.5a.8.8 0 1 1 0 1.6.8.8 0 0 1 0-1.6zm3 0a.8.8 0 1 1 0 1.6.8.8 0 0 1 0-1.6zM12 9l1.5 1h-3L12 9z"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 className="font-semibold">Linux</h3>
+                        <p className="text-sm text-zinc-400">AppImage or .deb</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4">
+                      {linuxFiles.map((file) => (
+                        <a
+                          key={file.name}
+                          href={file.url}
+                          className="feature-card rounded-xl p-4 hover:bg-white/5 transition-colors group"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="font-medium">{file.name.toLowerCase().endsWith(".deb") ? "Debian / Ubuntu package" : "AppImage (any distribution)"}</p>
+                              <p className="text-xs text-zinc-500">{file.name} ({formatFileSize(file.size)})</p>
+                            </div>
+                            <Download className="w-5 h-5 text-blue-400 group-hover:text-blue-300 transition-colors" />
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
