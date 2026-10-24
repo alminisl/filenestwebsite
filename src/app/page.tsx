@@ -325,11 +325,11 @@ export default function Home() {
                   )}
                   {/* Screenshot */}
                   {item.image && (
-                    <div className={`md:w-1/2 ${item.imageSize === 'small' ? 'flex justify-center' : ''}`}>
+                    <div className="md:w-1/2">
                       <img
                         src={item.image}
                         alt={`${item.title} screenshot`}
-                        className={`rounded-xl border border-white/10 ${item.imageSize === 'small' ? 'w-1/2' : 'w-full'}`}
+                        className="rounded-xl border border-white/10 w-full"
                       />
                     </div>
                   )}
