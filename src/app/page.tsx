@@ -279,7 +279,7 @@ export default function Home() {
           <div className="mb-12">
             <div className="feature-card rounded-2xl p-4 overflow-hidden">
               <video
-                src="/screenshots/showcase.mp4"
+                src="/screenshots/showcase.mp4?v=2"
                 className="w-full rounded-xl"
                 controls
                 autoPlay
